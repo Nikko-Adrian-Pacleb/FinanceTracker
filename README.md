@@ -1,3 +1,3 @@
 # FinanceTracker
-project by Jasper
- 
+project by Jasper and Nikko
+
