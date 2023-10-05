@@ -18,7 +18,6 @@ transactions = [
         'TransactionDate': datetime.datetime(2020, 1, 1),
         'TransactionAmount': 3000,
     }
-
 ]
 
 @app.route('/', methods=["GET","POST"])
