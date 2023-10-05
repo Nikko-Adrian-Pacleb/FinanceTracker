@@ -1,3 +1,2 @@
 # FinanceTracker
-project by Jasper and Nikko
-
+project by [Jasper](https://github.com/jaspy-c) and Nikko
