@@ -32,6 +32,18 @@
           </form>
         </div>
         <button type="submit" class="btn btn-primary"> Add </button>
+
+        <div id="transactions">
+          <h3>All Transactions:</h3>
+          {% for transaction in transactions %}
+              <div class="transaction">
+                  <div class="transaction">
+                      <p>Transaction ID: {{ transaction.TransactionID }}</p>
+                      <p>Transaction Date: {{ transaction.TransactionDate }}</p>
+                      <p>Transaction Amount: {{ transaction.TransactionAmount }}</p>
+              </div>
+          {% endfor %}
+      </div>
       </div>
     </div>
   </div>
