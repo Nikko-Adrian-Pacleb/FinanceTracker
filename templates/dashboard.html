@@ -38,9 +38,10 @@
           {% for transaction in transactions %}
               <div class="transaction">
                   <div class="transaction">
-                      <p>Transaction ID: {{ transaction.TransactionID }}</p>
-                      <p>Transaction Date: {{ transaction.TransactionDate }}</p>
-                      <p>Transaction Amount: {{ transaction.TransactionAmount }}</p>
+                      <p>Transaction ID: {{ transaction.id }}</p>
+                      <p>Transaction Title: {{ transaction.title }}</p>
+                      <p>Transaction Date: {{ transaction.amount }}</p>
+                      <p>Transaction Amount: {{ transaction.transactionDate }}</p>
               </div>
           {% endfor %}
       </div>
