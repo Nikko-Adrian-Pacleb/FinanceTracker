@@ -4,19 +4,18 @@ from database import engine
 from sqlalchemy import create_engine, text
 app = Flask(__name__)
 
-# def load_transactions_from_db():
-#     with engine.connect() as conn:
-#         result = conn.execute(text("select * from transactions"))
+def load_transactions_from_db():
+    with engine.connect() as conn:
+        result = conn.execute(text("select * from transactions"))
 
-#         transactions = []
-#         for row in result:
-#             transactions.append(dict(row._mapping))
-#         return transactions
-transactions=[]
+        transactions = []
+        for row in result:
+            transactions.append(dict(row._mapping))
+        return transactions
+transactions = load_transactions_from_db()
 
 @app.route('/', methods=["GET","POST"])
 def get_home():
-    # transactions = load_transactions_from_db()
     return render_template('dashboard.html', transactions=transactions)
                            
 @app.route('/submit', methods=['POST'])
@@ -28,6 +27,8 @@ def submit():
         transactions.append({'title': title, 'amount': amount, 'transactionDate': date})
         return redirect(url_for('get_home'))
     
+
+# This is for the D3 example
 @app.route('/get_data')
 def get_data():
     # Process and prepare your data
