@@ -1,0 +1,53 @@
+body {
+  background-color: #16191b;
+  color: white
+}
+.row {
+  justify-content: center;
+  margin:auto;
+}
+.rounded-column {
+  border-radius: 10px;
+}
+.add-button{
+  margin-top:10px;
+  margin-bottom:10px;
+}
+.no-padding {
+  padding: 0px;
+}
+.right-padding {
+  padding-right:10px;
+}
+.small-box {
+  background-color: #212529;
+  box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.5);
+  margin: 5px;
+  min-height: 240px;
+  font-size:2rem;
+  border-radius: 10px;
+}
+.box {
+    background-color: #212529;
+    box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.5);
+    margin: 5px;
+    min-height: 480px;
+    font-size:2rem;
+    border-radius: 10px;
+  }
+/* Add custom CSS for the navigation bar */
+.navbar-custom {
+    padding-left: 20px; /* Adjust the value as needed for left padding */
+    padding-right: 20px; /* Adjust the value as needed for right padding */
+}
+
+/* Optional: Style the navigation links */
+.navbar-custom .navbar-nav .nav-link {
+    padding-left: 10px; /* Adjust the value as needed for left padding */
+    padding-right: 10px; /* Adjust the value as needed for right padding */
+}
+/* Style the SVG element to fill its container */
+svg {
+    width: 100%;
+    height: 100%;
+}
