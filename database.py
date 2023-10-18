@@ -1,7 +1,8 @@
-from sqlalchemy import create_engine
-from dotenv import load_dotenv
-load_dotenv()
 import os
+from dotenv import load_dotenv
+from sqlalchemy import create_engine
+
+load_dotenv()
 
 db_connection_string = "mysql+pymysql://%s:%s@%s/%s?charset=utf8mb4" % (os.getenv("DB_USERNAME"), os.getenv("DB_PASSWORD"), os.getenv("DB_HOST"), os.getenv("DB_NAME"))
 engine = create_engine(
@@ -12,4 +13,3 @@ engine = create_engine(
         }
     }
 )
-
