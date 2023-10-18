@@ -1,33 +1,29 @@
-import datetime 
 from flask import Flask, render_template, jsonify, request, redirect, url_for
+from sqlalchemy.orm import Session
 from database import engine
-from sqlalchemy import create_engine, text
+from models.Transaction import Transaction, load_transactions
+
 app = Flask(__name__)
 
-def load_transactions_from_db():
-    with engine.connect() as conn:
-        result = conn.execute(text("select * from transactions"))
-
-        transactions = []
-        for row in result:
-            transactions.append(dict(row._mapping))
-        return transactions
-transactions = load_transactions_from_db()
+session = Session(engine)
 
 @app.route('/', methods=["GET","POST"])
 def get_home():
+    transactions = load_transactions()
     return render_template('dashboard.html', transactions=transactions)
                            
 @app.route('/submit', methods=['POST'])
 def submit():
     if request.method == 'POST':
-        title = request.form.get('title')
-        amount = request.form.get('amount')
-        date = request.form.get('date')
-        transactions.append({'title': title, 'amount': amount, 'transactionDate': date})
+        newTransaction = Transaction(title=request.form.get('title'), amount=request.form.get('amount'), transactionDate=request.form.get('date'))
+        session.add(newTransaction)
+        try:
+            session.commit()
+        except:
+            session.rollback()
+        
         return redirect(url_for('get_home'))
     
-
 # This is for the D3 example
 @app.route('/get_data')
 def get_data():
