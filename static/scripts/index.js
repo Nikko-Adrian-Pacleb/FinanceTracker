@@ -1,3 +1,17 @@
+// Function to get the current date and time
+function getCurrentDateAndTime() {
+    const dateTime = new Date();
+    // Change the format to YYYY-MM-DD
+    const dateTimeString = dateTime.getFullYear() + '-'
+        + ('0' + (dateTime.getMonth() + 1)).slice(-2) + '-'
+        + ('0' + dateTime.getDate()).slice(-2)
+    return dateTimeString;
+  }
+// Target an HTML element to display the current date and time
+const dateDisplay = document.getElementById("date");
+// Set the innerHTML of the element to the current date and time returned by the function
+dateDisplay.value = getCurrentDateAndTime();
+
 // Fetch data from Flask endpoint
 d3.json('/get_data')
 .then(function(data) {
