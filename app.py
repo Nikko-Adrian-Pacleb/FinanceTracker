@@ -24,6 +24,15 @@ def submit():
         
         return redirect(url_for('get_home'))
     
+@app.route('/get_transactions')
+def get_transactions():
+    transactions = load_transactions()
+    # If value is null default to expense
+    for transaction in transactions:
+        if transaction['isExpense'] == None:
+            transaction['isExpense'] = True
+    return jsonify(transactions)
+
 # This is for the D3 example
 @app.route('/get_data')
 def get_data():

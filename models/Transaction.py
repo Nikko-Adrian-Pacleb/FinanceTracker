@@ -1,8 +1,7 @@
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
-from sqlalchemy import Integer
 from sqlalchemy import select
-from sqlalchemy import String
+from sqlalchemy import String, Boolean, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import text
@@ -11,6 +10,7 @@ from database import engine
 class Transaction(declarative_base()):
     __tablename__ = 'transactions'
     id = Column(Integer, primary_key=True)
+    isExpense = Column(Boolean)
     title = Column(String(255))
     amount = Column(Integer)
     transactionDate = Column(String(255))
