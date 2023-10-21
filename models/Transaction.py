@@ -16,8 +16,8 @@ class Transaction(declarative_base()):
     transactionDate = Column(String(255))
 
     def __repr__(self):
-        return "<Transaction(title='%s', amount='%s', transactionDate='%s')>" % (
-            self.title, self.amount, self.transactionDate)
+        return "<Transaction(title='%s', isExpense=%s amount='%s', transactionDate='%s')>" % (
+            self.title, self.isExpense, self.amount, self.transactionDate)
 
 def load_transactions():
     with engine.connect() as conn:

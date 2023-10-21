@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, request, redirect, url_for
 from sqlalchemy.orm import Session
 from database import engine
 from models.Transaction import Transaction, load_transactions
+import sys
 
 app = Flask(__name__)
 
@@ -15,7 +16,13 @@ def get_home():
 @app.route('/submit', methods=['POST'])
 def submit():
     if request.method == 'POST':
-        newTransaction = Transaction(title=request.form.get('title'), amount=request.form.get('amount'), transactionDate=request.form.get('date'))
+        title = request.form.get('title')
+        isExpense = request.form.get('isExpense') == 'isExpense'
+        amount = request.form.get('amount')
+        transactionDate = request.form.get('date')
+
+        newTransaction = Transaction(title=title, isExpense=isExpense, amount=amount, transactionDate=transactionDate)
+        # return newTransaction.__repr__()
         session.add(newTransaction)
         try:
             session.commit()
