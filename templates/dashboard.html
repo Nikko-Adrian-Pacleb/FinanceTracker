@@ -24,14 +24,17 @@
         <h1 align="center"> Entries </h1>
         <form method="POST" action="/submit">
           <div class="row">
-              <div class="col-8 no-padding right-padding">
-                  <input name="title" id="title" class="form-control" placeholder="Type Entry">
+              <div class="col-6 no-padding right-padding">
+                <input name="title" id="title" class="form-control" placeholder="Type Entry">
               </div>
             <div class="col-2 no-padding right-padding">
-                <input name="amount" id="amount" type="number" step="0.01" class="form-control" placeholder="Amount">
+              <input name="amount" id="amount" type="number" step="0.01" class="form-control" placeholder="Amount">
             </div>
-            <div class="col-2 no-padding">
+            <div class="col-2 no-padding right-padding">
                 <input name="date" class="form-control" id="date" type="date"/>
+            <div class="col-2 no-padding">
+              <input type="checkbox" id="isExpense" name="isExpense" checked>
+              <label for="isExpense">Transaction is an Expense</label>
             </div>
           </div>
             <div class="row">
