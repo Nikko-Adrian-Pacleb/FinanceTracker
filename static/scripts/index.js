@@ -12,6 +12,13 @@ const dateDisplay = document.getElementById("date");
 // Set the innerHTML of the element to the current date and time returned by the function
 dateDisplay.value = getCurrentDateAndTime();
 
+// Remove the table row element
+function removeRow(button) {
+    // Get the closest table row and remove it
+    var row = button.closest('tr');
+    row.remove();
+}
+
 // Fetch data from Flask endpoint
 d3.json('/get_data')
 .then(function(data) {
