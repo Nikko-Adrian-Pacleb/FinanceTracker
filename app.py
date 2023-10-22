@@ -3,7 +3,6 @@ from sqlalchemy.orm import Session
 from database import engine
 from models.Transaction import Transaction, load_transactions
 import sys
-
 app = Flask(__name__)
 
 session = Session(engine)
@@ -17,7 +16,7 @@ def get_home():
 def submit():
     if request.method == 'POST':
         title = request.form.get('title')
-        isExpense = request.form.get('isExpense') == 'isExpense'
+        isExpense = request.form.get('transactionOption') != 'isIncome'
         amount = request.form.get('amount')
         transactionDate = request.form.get('date')
 
