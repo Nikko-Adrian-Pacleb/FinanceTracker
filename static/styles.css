@@ -63,3 +63,12 @@ svg {
         justify-content: flex-end;
         padding: .75rem;
 }
+/* Font color for income amount */
+tr .income-amount {
+  color: green;
+}
+
+/* Font color for expense amount */
+tr .expense-amount {
+  color: red;
+}

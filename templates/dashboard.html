@@ -34,7 +34,7 @@
                 <input name="date" class="form-control" id="date" type="date"/>
             </div>
             <div class="col-3 no-padding btn-group right-padding" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="transactionOption" id="isExpense" autocomplete="off" value="isExpense" checked>
+                <input type="radio" class="btn-check" name="transactionOption" id="isExpense" value="isExpense" autocomplete="off" checked>
                 <label class="btn btn-outline-primary no-padding text-align" for="isExpense">Expense</label>
               
                 <input type="radio" class="btn-check" name="transactionOption" id="isIncome" value="isIncome" autocomplete="off">
@@ -53,6 +53,7 @@
                     <th scope="col">Title</th>
                     <th scope="col">Amount</th>
                     <th scope="col">Date</th>
+                    <th scope="col">Type</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -61,11 +62,12 @@
               <tbody>
                 {% for transaction in transactions %}
                   <div class="transaction">
-                    <tr>
+                    <tr class="{% if transaction.isExpense == False %}income{% else %}expense{% endif %}">
                         <td> {{ transaction.id }} </td>
                         <td> {{ transaction.title }} </td>
-                        <td> {{ transaction.amount }} </td>
+                        <td class="amount {% if transaction.isExpense == False %}income-amount{% else %}expense-amount{% endif %}"> {{ transaction.amount }} </td>
                         <td> {{ transaction.transactionDate }} </td>
+                        <td> {% if transaction.isExpense == False %}Income{% else %}Expense{% endif %} </td>
                         <td>
                             <button class="btn btn-primary">Edit</button>
                             <button type="button" class="btn btn-close float-end close-button" aria-label="Close" onclick="removeRow(this)"></button>
