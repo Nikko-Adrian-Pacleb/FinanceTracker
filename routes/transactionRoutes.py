@@ -3,9 +3,18 @@ from models.Transaction import Transaction, load_transactions
 from database import engine
 from sqlalchemy.orm import Session
 
+# --- Contents --- #
+# Setup
+# Routes List
+# -- /transactions
+# -- /create_transaction
+
+
+# --- Setup --- #
 session = Session(engine)
 transaction_pages = Blueprint('transaction_pages', __name__, template_folder='templates')
 
+# --- Routes List --- #
 @transaction_pages.route('/transactions')
 def get_transactions():
     transactions = load_transactions()
