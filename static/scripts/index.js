@@ -29,24 +29,23 @@ document.addEventListener("DOMContentLoaded", function() {
             d.label = d.label === 1
         });
 
-        // Create a color scale for expenses and income
-        var colorScale = d3.scaleOrdinal()
-            .domain(["Expense", "Income"])
-            .range(["red", "green"]);
+    // Create an SVG element
+    var svg = d3.select('#chart');
 
-        // Create an SVG element
-        var svg = d3.select('#chart');
+    // Get the dimensions of the container
+    var containerWidth = document.getElementById('chart-container').offsetWidth;
+    var containerHeight = document.getElementById('chart-container').offsetHeight;
 
-        // Get the dimensions of the container
-        var containerWidth = document.getElementById('chart-container').offsetWidth;
-        var containerHeight = document.getElementById('chart-container').offsetHeight;
+    // Set the dimensions of the SVG based on the container's size
+    svg.attr('width', containerWidth)
+        .attr('height', containerHeight);
 
-        // Set the dimensions of the SVG based on the container's size
-        svg.attr('width', containerWidth)
-            .attr('height', containerHeight);
+    // Calculate the radius based on the smaller dimension (width or height)
+    var radius = Math.min(containerWidth, containerHeight) / 2;
 
-        // Calculate the radius based on the smaller dimension (width or height)
-        var radius = Math.min(containerWidth, containerHeight) / 2;
+    // Create a pie chart layout
+    var pie = d3.pie()
+        .value(function(d) { return d.value; });
 
         let pieData = [
             { label: "Expense", value: 0 },
@@ -65,14 +64,16 @@ document.addEventListener("DOMContentLoaded", function() {
         var pie = d3.pie()
             .value(function(d) { return d.value; });
 
-        // Generate arcs for the pie slices
-        var arc = d3.arc()
-            .outerRadius(radius)
-            .innerRadius(0);
+    // Create pie slices
+    var arcs = chartGroup.selectAll('arc')
+        .data(pie(data))
+        .enter()
+        .append('g');
 
-        // Create a group element for the pie chart and center it in the SVG
-        var chartGroup = svg.append('g')
-            .attr('transform', 'translate(' + containerWidth / 2 + ',' + containerHeight / 2 + ')');
+    // Draw the pie slices
+    arcs.append('path')
+        .attr('d', arc)
+        .attr('fill', function(d) { return color(d.data.label); });
 
         // Draw the pie slices
         chartGroup.selectAll('path')
