@@ -16,12 +16,25 @@ def get_home():
     transactions = load_transactions()
     return render_template('dashboard.html', transactions=transactions)  
 
+def get_table_data():
+    data = []  # Initialize an empty list
+    transactions = load_transactions()
+    # You should adapt this part to match the structure of your table
+    for transaction in transactions:
+        # Assuming 'transactions' is a list of dictionaries
+        # Access 'isExpense' using dictionary key
+        item = {
+            "label": transaction.get('isExpense', True),  # Default to True if 'isExpense' is not present
+            "value": transaction.get('amount', 0.0)  # Default to 0.0 if 'amount' is not present
+        }
+        data.append(item)
+    return data
+
 # This is for the D3 example
 @app.route('/get_data')
 def get_data():
-    # Process and prepare your data
-    data = [{"label": "A", "value": 50}, {"label": "B", "value": 20}, {"label": "C", "value": 15}]
-    return jsonify(data)
+    data = get_table_data()  # Get data from the table
+    return jsonify(data)  # Return the data as JSON
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)

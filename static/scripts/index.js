@@ -19,53 +19,83 @@ function removeRow(button) {
     row.remove();
 }
 
-// Fetch data from Flask endpoint
-d3.json('/get_data')
-.then(function(data) {
-    // Create a color scale
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
+document.addEventListener("DOMContentLoaded", function() {
+    // Fetch data from Flask endpoint
+    d3.json('/get_data')
+    .then(function(data) {
+        // Convert the isExpense field to a boolean
+        
+        data.forEach(function(d) {
+            d.label = d.label === 1
+        });
 
-    // Create an SVG element
-    var svg = d3.select('#chart');
+        // Create a color scale for expenses and income
+        var colorScale = d3.scaleOrdinal()
+            .domain(["Expense", "Income"])
+            .range(["red", "green"]);
 
-    // Get the dimensions of the container
-    var containerWidth = document.getElementById('chart-container').offsetWidth;
-    var containerHeight = document.getElementById('chart-container').offsetHeight;
+        // Create an SVG element
+        var svg = d3.select('#chart');
 
-    // Set the dimensions of the SVG based on the container's size
-    svg.attr('width', containerWidth)
-        .attr('height', containerHeight);
+        // Get the dimensions of the container
+        var containerWidth = document.getElementById('chart-container').offsetWidth;
+        var containerHeight = document.getElementById('chart-container').offsetHeight;
 
-    // Calculate the radius based on the smaller dimension (width or height)
-    var radius = Math.min(containerWidth, containerHeight) / 2;
+        // Set the dimensions of the SVG based on the container's size
+        svg.attr('width', containerWidth)
+            .attr('height', containerHeight);
 
-    // Create a pie chart layout
-    var pie = d3.pie()
-        .value(function(d) { return d.value; });
+        // Calculate the radius based on the smaller dimension (width or height)
+        var radius = Math.min(containerWidth, containerHeight) / 2;
 
-    // Generate arcs for the pie slices
-    var arc = d3.arc()
-        .outerRadius(radius)
-        .innerRadius(0);
+        let pieData = [
+            { label: "Expense", value: 0 },
+            { label: "Income", value: 0 }
+        ]
+        data.forEach(function(d) {
+            console.log(d);
+            if (d.label) {
+                pieData[0].value += d.value;
+            } else {
+                pieData[1].value += d.value;
+            }
+        });
+        
+        // Create a pie chart layout
+        var pie = d3.pie()
+            .value(function(d) { return d.value; });
 
-    // Create a group element for the pie chart and center it in the SVG
-    var chartGroup = svg.append('g')
-        .attr('transform', 'translate(' + containerWidth / 2 + ',' + containerHeight / 2 + ')');
+        // Generate arcs for the pie slices
+        var arc = d3.arc()
+            .outerRadius(radius)
+            .innerRadius(0);
 
-    // Create pie slices
-    var arcs = chartGroup.selectAll('arc')
-        .data(pie(data))
-        .enter()
-        .append('g');
+        // Create a group element for the pie chart and center it in the SVG
+        var chartGroup = svg.append('g')
+            .attr('transform', 'translate(' + containerWidth / 2 + ',' + containerHeight / 2 + ')');
 
-    // Draw the pie slices
-    arcs.append('path')
-        .attr('d', arc)
-        .attr('fill', function(d) { return color(d.data.label); });
+        // Draw the pie slices
+        chartGroup.selectAll('path')
+            .data(pie(pieData))
+            .enter()
+            .append('path')
+            .attr('d', arc)
+            .attr('fill', function(d) {
+                return colorScale(d.data.label);
+            });
 
-    // Add labels to the pie slices
-    arcs.append('text')
-        .attr('transform', function(d) { return 'translate(' + arc.centroid(d) + ')'; })
-        .attr('text-anchor', 'middle')
-        .text(function(d) { return d.data.label; });
-});
+        // Add labels to the pie slices
+        chartGroup.selectAll('text')
+            .data(pie(pieData))
+            .enter()
+            .append('text')
+            .attr('transform', function(d) {
+                var pos = arc.centroid(d);
+                return 'translate(' + pos[0] + ',' + pos[1] + ')';
+            })
+            .attr('text-anchor', 'middle')
+            .text(function(d) {
+                return d.data.label;
+        });
+    });
+})
