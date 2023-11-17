@@ -24,8 +24,9 @@ document.addEventListener("DOMContentLoaded", function() {
     d3.json('/get_data')
     .then(function(data) {
         // Convert the isExpense field to a boolean
+        
         data.forEach(function(d) {
-            d.isExpense = d.isExpense === true || d.isExpense === "true" || d.isExpense === 1;
+            d.label = d.label === 1
         });
 
         // Create a color scale for expenses and income
@@ -47,16 +48,19 @@ document.addEventListener("DOMContentLoaded", function() {
         // Calculate the radius based on the smaller dimension (width or height)
         var radius = Math.min(containerWidth, containerHeight) / 2;
 
-        // Create a pie chart layout
-        // Sort the data based on the isExpense field
-        data.sort(function(a, b) {
-            // Ensure expenses come before income
-            if (a.isExpense && !b.isExpense) return -1;
-            if (!a.isExpense && b.isExpense) return 1;
-            // For items of the same type, you can choose another sorting criterion
-            return 0;
+        let pieData = [
+            { label: "Expense", value: 0 },
+            { label: "Income", value: 0 }
+        ]
+        data.forEach(function(d) {
+            console.log(d);
+            if (d.label) {
+                pieData[0].value += d.value;
+            } else {
+                pieData[1].value += d.value;
+            }
         });
-
+        
         // Create a pie chart layout
         var pie = d3.pie()
             .value(function(d) { return d.value; });
@@ -72,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Draw the pie slices
         chartGroup.selectAll('path')
-            .data(pie(data))
+            .data(pie(pieData))
             .enter()
             .append('path')
             .attr('d', arc)
@@ -82,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // Add labels to the pie slices
         chartGroup.selectAll('text')
-            .data(pie(data))
+            .data(pie(pieData))
             .enter()
             .append('text')
             .attr('transform', function(d) {
@@ -95,60 +99,3 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 })
-
-
-
-//     d3.json('/get_data')
-//     .then(function(data) {
-
-//         var width = 100;
-//         var height = 100;
-//         var radius = Math.min(width, height) / 2;
-
-//         // Define custom color scales for income and expense categories
-//         var colorIncome = d3.scaleOrdinal()
-//             .domain(["Income"]) // Set the domain to the category you want to color
-//             .range(["green"]); // Set the color you prefer
-
-//         var colorExpense = d3.scaleOrdinal()
-//             .domain(["Expense"]) // Set the domain to the category you want to color
-//             .range(["red"]); // Set the color you prefer
-
-//         var svg = d3.select("#chart")
-//             .append("svg")
-//             .attr("width", width)
-//             .attr("height", height)
-//             .append("g")
-//             .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-//         var arc = d3.arc()
-//             .innerRadius(0)
-//             .outerRadius(radius);
-
-//         var pie = d3.pie()
-//             .value(function(d) { return d.value; });
-
-//         // Group the data by category using d3.group
-//         var groupedData = d3.group(data, d => d.category);
-
-//         var g = svg.selectAll(".arc")
-//             .data(pie([...groupedData.entries()]))
-//             .enter().append("g")
-//             .attr("class", "arc");
-
-//         groupedData.forEach(function(group) {
-//             var paths = g.selectAll(".arc-" + group.key)
-//                 .data(pie(group.values))
-//                 .enter()
-//                 .append("path")
-//                 .attr("d", arc)
-//                 .style("fill", function(d, i) {
-//                     return group.key === "Income" ? colorIncome(i) : colorExpense(i);
-//                 });
-//         });
-//     });
-// })
-
-
-
-// console.log("Code reached this point");
