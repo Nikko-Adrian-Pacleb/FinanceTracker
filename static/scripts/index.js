@@ -29,6 +29,11 @@ document.addEventListener("DOMContentLoaded", function() {
             d.label = d.label === 1
         });
 
+    // Create a color scale for expenses and income
+    var colorScale = d3.scaleOrdinal()
+    .domain(["Expense", "Income"])
+    .range(["red", "green"]);
+    
     // Create an SVG element
     var svg = d3.select('#chart');
 
