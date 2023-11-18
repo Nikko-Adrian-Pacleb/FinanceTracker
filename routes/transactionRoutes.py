@@ -26,7 +26,7 @@ transaction_pages = Blueprint('transaction_pages', __name__, template_folder='te
 
 @transaction_pages.route('/transactions')
 def get_transactions():
-    transaction = session.query(Transaction).all()
+    transactions = session.query(Transaction).order_by(Transaction.transactionDate.desc(), Transaction.id.desc()).all()
     transactionJSON = []
     for t in transaction:
         transactionJSON.append(t.__json__())

@@ -14,12 +14,12 @@ app.register_blueprint(transaction_pages, url_prefix='/transaction')
 
 @app.route('/', methods=["GET","POST"])
 def get_home():
-    transactions = session.query(Transaction).all()
+    transactions = session.query(Transaction).order_by(Transaction.transactionDate.desc(), Transaction.id.desc()).all()
     return render_template('dashboard.html', transactions=transactions)  
 
 def get_table_data():
     data = []  # Initialize an empty list
-    transactions = session.query(Transaction).all()
+    transactions = session.query(Transaction).order_by(Transaction.transactionDate.desc(), Transaction.id.desc()).all()
     # You should adapt this part to match the structure of your table
     for transaction in transactions:
         # Assuming 'transactions' is a list of dictionaries
