@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify , request, redirect, url_for
-from models.Transaction import Transaction, load_transactions
+from models.Transaction import Transaction
 from database import engine
 from sqlalchemy.orm import Session
 
@@ -15,14 +15,23 @@ session = Session(engine)
 transaction_pages = Blueprint('transaction_pages', __name__, template_folder='templates')
 
 # --- Routes List --- #
+# @transaction_pages.route('/transactions')
+# def get_transactions():
+#     transactions = load_transactions()
+#     # If value is null default to expense
+#     for transaction in transactions:
+#         if transaction['isExpense'] == None:
+#             transaction['isExpense'] = True
+#     return jsonify(transactions)
+
 @transaction_pages.route('/transactions')
 def get_transactions():
-    transactions = load_transactions()
-    # If value is null default to expense
-    for transaction in transactions:
-        if transaction['isExpense'] == None:
-            transaction['isExpense'] = True
-    return jsonify(transactions)
+    transaction = session.query(Transaction).all()
+    transactionJSON = []
+    for t in transaction:
+        transactionJSON.append(t.__json__())
+
+    return jsonify(transactionJSON)
 
 @transaction_pages.route('/create_transaction', methods=['POST'])
 def submit():
@@ -41,3 +50,5 @@ def submit():
             session.rollback()
         
         return redirect(url_for('get_home'))
+    
+

@@ -15,15 +15,26 @@ class Transaction(declarative_base()):
     amount = Column(Integer)
     transactionDate = Column(String(255))
 
+    def __json__(self):
+        return {
+            'id': self.id,
+            'isExpense': self.isExpense,
+            'title': self.title,
+            'amount': self.amount,
+            'transactionDate': self.transactionDate
+        }
+
     def __repr__(self):
         return "<Transaction(title='%s', isExpense=%s amount='%s', transactionDate='%s')>" % (
             self.title, self.isExpense, self.amount, self.transactionDate)
 
-def load_transactions():
-    with engine.connect() as conn:
-        result = conn.execute(text("select * from transactions order by transactionDate desc"))
+# Commented due to TransactionRoute code changes
+# def load_transactions():
+#     with engine.connect() as conn:
+#         result = conn.execute(text("select * from transactions order by transactionDate desc"))
 
-        transactions = []
-        for row in result:
-            transactions.append(dict(row._mapping))
-        return transactions
+#         transactions = []
+#         for row in result:
+#             transactions.append(dict(row._mapping))
+#         return transactions
+
