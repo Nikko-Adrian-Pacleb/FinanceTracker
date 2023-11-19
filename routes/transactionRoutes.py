@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 # Setup
 # Routes List
 # -- /transactions
+# -- /<id>
 # -- /create_transaction
 
 
@@ -15,15 +16,6 @@ session = Session(engine)
 transaction_pages = Blueprint('transaction_pages', __name__, template_folder='templates')
 
 # --- Routes List --- #
-# @transaction_pages.route('/transactions')
-# def get_transactions():
-#     transactions = load_transactions()
-#     # If value is null default to expense
-#     for transaction in transactions:
-#         if transaction['isExpense'] == None:
-#             transaction['isExpense'] = True
-#     return jsonify(transactions)
-
 @transaction_pages.route('/transactions')
 def get_transactions():
     transactions = session.query(Transaction).order_by(Transaction.transactionDate.desc(), Transaction.id.desc()).all()
@@ -32,6 +24,13 @@ def get_transactions():
         transactionJSON.append(t.__json__())
 
     return jsonify(transactionJSON)
+
+@transaction_pages.route('/<id>')
+def get_transaction(id):
+    transaction = session.query(Transaction).filter(Transaction.id == id).first()
+    if transaction is None:
+        return jsonify({'error': 'Transaction not found'}), 404
+    return jsonify(transaction.__json__())
 
 @transaction_pages.route('/create_transaction', methods=['POST'])
 def submit():
