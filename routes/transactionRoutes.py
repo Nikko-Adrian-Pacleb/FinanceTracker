@@ -20,7 +20,7 @@ transaction_pages = Blueprint('transaction_pages', __name__, template_folder='te
 def get_transactions():
     transactions = session.query(Transaction).order_by(Transaction.transactionDate.desc(), Transaction.id.desc()).all()
     transactionJSON = []
-    for t in transaction:
+    for t in transactions:
         transactionJSON.append(t.__json__())
 
     return jsonify(transactionJSON)
