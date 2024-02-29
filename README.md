@@ -21,11 +21,12 @@ Finance Tracker is a web application that helps users manage their finances by t
 ### Installation Steps
 1. Clone the repository
 2. Install dependencies
-	```pip install -r requirements.txt
+```pip install -r requirements.txt```
 
 ## Running
 Option 1: running using python
 ```flask run```
+
 Option 2: running using docker
 ```docker compose up```
 
